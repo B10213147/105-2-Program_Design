@@ -21,7 +21,7 @@ void List(Node *linklist);
 void Find(void);
 void Save(void);
 void Open(void);
-void free_linklist(Node *linklist);
+void free_linklist(Node **linklist);
 
 Node *temp_linklist = 0;
 Node *file_linklist = 0;
@@ -51,8 +51,7 @@ int main()
             break;
         case 'q':
         case 'Q':
-            free_linklist(temp_linklist);
-            free_linklist(file_linklist);
+            free_linklist(&temp_linklist);
             return 0;
             break;
         default:
@@ -98,7 +97,6 @@ char func_list(void){
 
 void Insert(void){
     system("cls");
-    //Node *newnode = (Node *)malloc(sizeof(Node));
     Node *newnode = new Node;
     newnode->next = 0;
 
@@ -164,7 +162,6 @@ void Open(void){
     cout << "Please enter the file name:";
     getline(cin, filename);
 
-
     char line[100];
     fstream fp;
     fp.open(filename.c_str(), fstream::in);
@@ -190,6 +187,7 @@ void Open(void){
             }
         }
         List(file_linklist);
+        free_linklist(&file_linklist);
     }
     else{   // Open file failure
         cout << "Can't find the file." <<endl;
@@ -198,10 +196,10 @@ void Open(void){
     fp.close();
 }
 
-void free_linklist(Node *linklist){
-    while(linklist != 0){
-        Node *current = linklist;
-        linklist = linklist->next;
+void free_linklist(Node **linklist){
+    while(*linklist != 0){
+        Node *current = *linklist;
+        *linklist = (*linklist)->next;
         delete current;
     }
 }
