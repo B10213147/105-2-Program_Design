@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -57,11 +58,11 @@ int main()
         default:
             break;
         }
-        system("cls");
     }
 }
 
 char func_list(void){
+    system("cls");
     cout << "i: Insert" << endl;
     cout << "l: List" << endl;
     cout << "f: Find" << endl;
@@ -140,11 +141,61 @@ void Find(void){
 }
 
 void Save(void){
+    system("cls");
+    string filename;
+    cout << "Please enter the file name:";
+    getline(cin, filename);
 
+    fstream fp;
+    fp.open(filename.c_str(), fstream::out | fstream::app);
+    Node *writelist = temp_linklist;
+    while(writelist != 0){
+        fp << writelist->data.name << '\t';
+        fp << writelist->data.phone << '\t';
+        fp << writelist->data.mail << endl;
+        writelist = writelist->next;
+    }
+    fp.close();
 }
 
 void Open(void){
+    system("cls");
+    string filename;
+    cout << "Please enter the file name:";
+    getline(cin, filename);
 
+
+    char line[100];
+    fstream fp;
+    fp.open(filename.c_str(), fstream::in);
+    if(!fp.fail()){
+        while(fp.getline(line, sizeof(line), '\t')){
+            Node *newnode = new Node;
+            newnode->next = 0;
+            newnode->data.name = line;
+            fp.getline(line, sizeof(line), '\t');
+            newnode->data.phone = line;
+            fp.getline(line, sizeof(line), '\n');
+            newnode->data.mail = line;
+
+            if(file_linklist == 0){
+                file_linklist = newnode;
+            }
+            else{
+                Node *current;
+                for(current = file_linklist; \
+                    current->next != 0; \
+                    current = current->next);
+                current->next = newnode;
+            }
+        }
+        List(file_linklist);
+    }
+    else{   // Open file failure
+        cout << "Can't find the file." <<endl;
+        cin.get();
+    }
+    fp.close();
 }
 
 void free_linklist(Node *linklist){
