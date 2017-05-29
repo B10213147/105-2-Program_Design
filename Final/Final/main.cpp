@@ -18,8 +18,8 @@ public:
 char func_list(void);
 void Insert(void);
 void List(Node *linklist);
-void Find(void);
-void Save(void);
+void Find(Node *linklist);
+void Save(Node *writelist);
 void Open(void);
 void free_linklist(Node **linklist);
 
@@ -39,11 +39,11 @@ int main()
             break;
         case 'f':
         case 'F':
-            Find();
+            Find(file_linklist);
             break;
         case 's':
         case 'S':
-            Save();
+            Save(temp_linklist);
             break;
         case 'o':
         case 'O':
@@ -52,6 +52,7 @@ int main()
         case 'q':
         case 'Q':
             free_linklist(&temp_linklist);
+            free_linklist(&file_linklist);
             return 0;
             break;
         default:
@@ -134,19 +135,34 @@ void List(Node *linklist){
     cin.get();
 }
 
-void Find(void){
+void Find(Node *linklist){
+    system("cls");
+    string enteredname;
+    cout << "Please enter a friend's name:";
+    getline(cin, enteredname);
 
+    while(linklist != 0){
+        if(linklist->data.name == enteredname){
+            cout << linklist->data.name << '\t';
+            cout << linklist->data.phone << '\t';
+            cout << linklist->data.mail << endl;
+            cin.get();
+            return;
+        }
+        linklist = linklist->next;
+    }
+    cout << "Cannot find this name!" << endl;
+    cin.get();
 }
 
-void Save(void){
+void Save(Node *writelist){
     system("cls");
     string filename;
-    cout << "Please enter the file name:";
+    cout << "Please enter a file name:";
     getline(cin, filename);
 
     fstream fp;
     fp.open(filename.c_str(), fstream::out | fstream::app);
-    Node *writelist = temp_linklist;
     while(writelist != 0){
         fp << writelist->data.name << '\t';
         fp << writelist->data.phone << '\t';
@@ -159,13 +175,14 @@ void Save(void){
 void Open(void){
     system("cls");
     string filename;
-    cout << "Please enter the file name:";
+    cout << "Please enter a file name:";
     getline(cin, filename);
 
     char line[100];
     fstream fp;
     fp.open(filename.c_str(), fstream::in);
     if(!fp.fail()){
+        free_linklist(&file_linklist);
         while(fp.getline(line, sizeof(line), '\t')){
             Node *newnode = new Node;
             newnode->next = 0;
@@ -187,7 +204,6 @@ void Open(void){
             }
         }
         List(file_linklist);
-        free_linklist(&file_linklist);
     }
     else{   // Open file failure
         cout << "Can't find the file." <<endl;
