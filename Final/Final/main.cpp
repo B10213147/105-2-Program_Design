@@ -15,7 +15,7 @@ public:
     Node *next;
 };
 
-char func_list(void);
+char func_menu(void);
 void Insert(void);
 void List(Node *linklist);
 void Find(Node *linklist);
@@ -28,7 +28,7 @@ Node *file_linklist = 0;
 int main()
 {
     while(1){
-        switch(func_list()){
+        switch(func_menu()){
         case 'i':
         case 'I':
             Insert();
@@ -61,7 +61,7 @@ int main()
     }
 }
 
-char func_list(void){
+char func_menu(void){
     system("cls");
     cout << "i: Insert" << endl;
     cout << "l: List" << endl;
