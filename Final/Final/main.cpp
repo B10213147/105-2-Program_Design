@@ -138,6 +138,7 @@ void List(Node *linklist){
 void Find(Node *linklist){
     system("cls");
     string enteredname;
+    cin.clear();
     cout << "Please enter a friend's name:";
     getline(cin, enteredname);
 
@@ -158,6 +159,7 @@ void Find(Node *linklist){
 void Save(Node *writelist){
     system("cls");
     string filename;
+    cin.clear();
     cout << "Please enter a file name:";
     getline(cin, filename);
 
@@ -175,6 +177,7 @@ void Save(Node *writelist){
 void Open(void){
     system("cls");
     string filename;
+    cin.clear();
     cout << "Please enter a file name:";
     getline(cin, filename);
 
