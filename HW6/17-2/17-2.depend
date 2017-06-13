@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1497352502 source:i:\17-2\main.cpp
+	<iostream>
+	<fstream>
+	<algorithm>
+	<cmath>
+
