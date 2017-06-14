@@ -12,35 +12,41 @@ public:
     int rank;
 
     float str2float(char *str);
-private:
 };
+
 bool a_comp(Grade a, Grade b){ return a.score > b.score; }
+
 Grade gradedata[10];
 int main()
 {
     fstream fp;
     fp.open("gradedata.txt", fstream::in);
     if(!fp){ return -1; }
-    for(int i = 0; i < 7; i++){
+    char line[100];
+    int n_lines;
+    for(int i = 0; line[0] != 0; i++){
         Grade A;
-        char line[100];
         fp.getline(line, 100, ' ');
+        if(line[0] == 0){
+            n_lines = i;
+            break;
+        }
         A.name = line;
         fp.getline(line, 100, '\n');
         A.score = A.str2float(line + 1);
         gradedata[i] = A;
     }
     fp.close();
-    sort(gradedata, gradedata + 7, a_comp);
+    sort(gradedata, gradedata + n_lines, a_comp);
     cout << "Name\tScore\tRank" << endl;
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < n_lines; i++){
         cout << gradedata[i].name << '\t' <<
         gradedata[i].score << '\t' <<
         i + 1 << endl;
     }
     fp.open("output.txt", fstream::out);
     fp << "Name\tScore\tRank" << endl;
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < n_lines; i++){
         fp << gradedata[i].name << '\t' <<
         gradedata[i].score << '\t' <<
         i + 1 << endl;
@@ -67,4 +73,3 @@ float Grade::str2float(char *str){
     }
     return sum;
 }
-
